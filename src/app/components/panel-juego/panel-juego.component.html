@@ -1,0 +1,53 @@
+<div class="card">
+    <div class="card-header">
+        <h2>Adivina qué número pienso</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-8">
+                <label> Ingrese su número:</label>
+                <input type="text" [(ngModel)]="valorIngresado" class="form-control">
+                <br>
+                <button *ngIf="!finalizado" (click)="intento()" class="btn btn-primary">Probar</button>
+                <button *ngIf="finalizado" (click)="reinicio()" class="btn btn-primary">Volver a Jugar</button>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Vidas</h4>
+                            </div>
+                            <div class="card-body">
+                                Te quedan {{vidas}} vidas
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Números utilizados</h4>
+                            </div>
+                            <div class="card-body">
+                                <ul>
+                                    <li *ngFor="let numero of numeros">{{numero}}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+    <div class="card-footer">
+        <h4 *ngIf="!finalizado">{{pista}}</h4>    
+        <div *ngIf="finalizado">
+            <h3 *ngIf="ganador">
+                Ganaste!!!
+            </h3>
+            <h3 *ngIf="!ganador">
+                Perdiste!! El número que pensaba era el {{valorJuego}}
+            </h3>
+        </div>
+    </div>
+
+</div>
