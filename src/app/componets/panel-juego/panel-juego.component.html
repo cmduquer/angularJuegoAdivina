@@ -1,0 +1,24 @@
+<table border="1">
+<tr>
+    <td>Números Intentados</td>
+    <td>{{numeros}}</td>
+    <td>Vidas</td>
+    <td>{{vidas}}</td>
+</tr>
+<tr>
+    <td>Adivine su número</td>
+    <td colspan="3">
+        <input type="text" [(ngModel)]="valorIngresado">
+    </td>
+</tr>
+<tr>
+    <td colspan="4">
+        <button>Probar</button>
+    </td>
+</tr>
+<tr>
+    <td colspan="4">{{resultado}}</td>
+</tr>
+</table>
+
+{{valorIngresado}}
