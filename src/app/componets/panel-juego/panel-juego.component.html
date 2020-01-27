@@ -1,24 +1,47 @@
-<table border="1">
-<tr>
-    <td>Números Intentados</td>
-    <td>{{numeros}}</td>
-    <td>Vidas</td>
-    <td>{{vidas}}</td>
-</tr>
-<tr>
-    <td>Adivine su número</td>
-    <td colspan="3">
-        <input type="text" [(ngModel)]="valorIngresado">
-    </td>
-</tr>
-<tr>
-    <td colspan="4">
-        <button>Probar</button>
-    </td>
-</tr>
-<tr>
-    <td colspan="4">{{resultado}}</td>
-</tr>
-</table>
+<table>
+    <tr>
+        <th colspan="4">
+            <h2>Adivina qué número pienso</h2>
+        </th>
+    </tr>
+    <tr *ngIf="finalizado">
+        <td colspan="4">
+            <h3 *ngIf="ganador">
+                Ganaste!!!
+            </h3>
+            <h3 *ngIf="!ganador">
+                Perdiste!! El número que pensaba era el {{valorJuego}}
+            </h3>
+        </td>
 
-{{valorIngresado}}
+    </tr>
+    <tr>
+        <td>Números Intentados</td>
+        <td>
+            <table border = 1>
+                <tr>
+                    <td *ngFor="let numero of numeros">{{numero}}</td>
+                </tr>
+            </table>
+        </td>
+        <td>Vidas</td>
+        <td>{{vidas}}</td>
+    </tr>
+    <tr>
+        <td>Adivine su número</td>
+        <td colspan="3">
+            <input type="text" [(ngModel)]="valorIngresado">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            <button *ngIf="!finalizado" (click)="intento()">Probar</button>
+            <button *ngIf="finalizado" (click)="reinicio()">Volver a Jugar</button>
+        </td>
+    </tr>
+    <tr>
+        <th colspan="4">
+            {{pista}}
+        </th>
+    </tr>
+</table>
