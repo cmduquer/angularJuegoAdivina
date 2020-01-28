@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { JuegoService } from './../../services/juego.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-configuracion',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfiguracionComponent implements OnInit {
 
-  constructor() { }
+  max: number;
+  vidas: number;
+
+  constructor(private juegoService: JuegoService, private router: Router) {}
 
   ngOnInit() {
+    this.max = this.juegoService.obtieneMaximo();
+    this.vidas = this.juegoService.obtieneVidas();
+  }
+
+  guardarCambios(): void {
+    this.juegoService.ajustaNumeroMaximo(this.max);
+    this.juegoService.ajustaVidas(this.vidas);
+    alert('Cambios guardados');
+    this.router.navigate(['bienvenida']);
   }
 
 }

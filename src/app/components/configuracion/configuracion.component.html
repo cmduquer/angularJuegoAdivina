@@ -6,11 +6,11 @@
     </div>
     <div class="card-body">
         <label>Máximo valor</label>
-        <input type="text" class="form-control">
+        <input type="text" [(ngModel)]="max" class="form-control">
         <label>Intentos</label>
-        <input type="text" class="form-control">
+        <input type="text" [(ngModel)]="vidas" class="form-control">
     </div>
     <div class="card-footer">
-        <button class="btn btn-primay">Guardar Cambios</button>
+        <button type="button" class="btn btn-primary" (click)="guardarCambios()">Guardar Cambios</button>
     </div>
 </div>

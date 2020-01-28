@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { JuegoService } from './../../services/juego.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-panel-juego',
@@ -7,48 +9,59 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PanelJuegoComponent implements OnInit {
   valorJuego: number;
-  vidas: number = 5;
+  vidas: number = 0;
+  estado: string;
   numeros: Array<number> = [];
   valorIngresado: number;
   resultado: string = 'En curso';
   finalizado: boolean = false;
   ganador: boolean = false;
   pista: string;
+  max: number;
 
-  constructor() { }
+  constructor(private juegoService: JuegoService, private router: Router) {
+    this.juegoService.estadoJuego().subscribe(next =>{this.estado = next});
+  }
 
   ngOnInit() {
-    this.valorJuego = Math.floor(Math.random() * (101));
+    this.max = this.juegoService.obtieneMaximo();
+    if(this.estado !== 'iniciado'){
+      if(this.estado === 'finalizado'){
+        this.router.navigate(['gameover']);
+      }
+    }
+    if(this.estado === 'no iniciado'){
+      this.router.navigate(['bienvenida']);
+    } else {
+      this.juegoService.comienzaJuego();
+      this.juegoService.listaNumeros().subscribe( next => { this.numeros = next });
+    }
+    this.juegoService.numeroVidas().subscribe(next => {this.vidas = next});
   }
   
   intento(): void {
-    if(this.valorIngresado == this.valorJuego) {
-      this.ganador = true;
-      this.finalizado = true;
-      this.pista = 'Igual';
+    const resultado = this.juegoService.ingresaNumero(this.valorIngresado);
+    if(resultado == '=') {
+      this.juegoService.finalizaJuego();
+      this.router.navigate(['gameover']);
+    } else {
+      if(this.estado==='finalizado'){
+        this.juegoService.finalizaJuego();
+        this.router.navigate(['gameover']);
+      }
+      if(resultado === '>'){
+        this.pista = 'El número es muy grande';
+      }
+      if(resultado === '<'){
+        this.pista = 'El número es muy pequeño';
+      }
     }
-    if(this.valorIngresado > this.valorJuego) {
-      this.pista = 'Mi número es menor';
-    }
-    if(this.valorIngresado < this.valorJuego) {
-      this.pista = 'Mi número es mayor';
-    }
-    this.numeros.push(this.valorIngresado);
-    console.log(this.numeros);
-    this.vidas = this.vidas - 1;
-    if(this.vidas === 0){
-      this.finalizado = true;
-    }
+    this.valorIngresado = 0;
+    
   }
 
   reinicio() : void {
-    this.valorJuego = Math.floor(Math.random() * (101));  
-    this.vidas = 5;
-    this.numeros = [];
-    this.valorIngresado = null;
-    this.finalizado = false;
-    this.ganador = false;
-    this.pista = '';
+    this.juegoService.reset();
   }
 
 }
